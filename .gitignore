@@ -1,0 +1,6 @@
+.env
+# postgres volume
+docker/postgres/data
+docker/postgres/init
+# mongodb volume
+
