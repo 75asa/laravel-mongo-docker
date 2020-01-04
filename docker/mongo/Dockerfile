@@ -1,0 +1,2 @@
+FROM mongo
+ENV LANG ja_JP.UTF-8

@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-
   php:
     build: ./docker/php-apache
     image: php7.2-apache-composer
@@ -15,6 +14,7 @@ services:
       - 80:80
     depends_on:
       - postgres
+      - mongo
 
   postgres:
     build: ./docker/postgres
@@ -33,18 +33,38 @@ services:
     ports:
       - 5432:5432
 
-  mongodb:
-    build: ./docker/mongodb
-    image: mongodb
+  mongo:
+    build: ./docker/mongo
+    image: mongo
     restart: always
-    container_name: ${APP_NAME}-mongodb
+    container_name: ${APP_NAME}-mongo
     environment:
-      POSTGRES_DB: ${DB_DATABASE}
       MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
       - 27017:27017
+      - 27018:27018
+    command: mongod --smallfiles
+    volumes:
+      - ./docker/mongo/data:/data/db
+      - ./docker/mongo/configdb:/data/configdb
+  mongo-express:
+    image: mongo-express
+    links:
+      - mongo:mongo
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINGUSERNAME: ${DB_USERNAME}
+      ME_CONFIG_MONGODB_ADMINGPASSWORD: ${DB_PASSWORD}
+      ME_CONFIG_OPTIONS_EDITORTHEME: ${DB_EDITORTHEME}
+    depends_on:
+      - mongo
 
 volumes:
   postgres:
-  mongodb:
+  mongo-data:
+    driver: local
+  mongo-config:
+    driver: local
