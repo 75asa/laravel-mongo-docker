@@ -1,2 +1,4 @@
 FROM mongo
-ENV LANG ja_JP.UTF-8
+COPY /init/ /docker-entrypoint-initdb.d/
+EXPOSE 27017
+CMD ['mongod', '--auth']

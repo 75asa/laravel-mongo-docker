@@ -1,19 +1,10 @@
 let testdb = db.getSiblingDB('test');
-testdb.createUser(
-  {
-    user: 'test',
-    pwd: 'password',
-    roles:
-      [
-        {
-          role: 'root',
-          db: 'admin'
-        },
-        {
-          role: 'dbOwner',
-          db: 'test'
-        }
-      ]
-  }
-);
+testdb.createUser({
+  user: 'test',
+  pwd: 'password',
+  roles: [{
+    role: 'readWrite',
+    db: 'test'
+  }]
+});
 testdb.getUsers();

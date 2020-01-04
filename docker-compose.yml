@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 services:
   php:
@@ -15,7 +15,6 @@ services:
     depends_on:
       - postgres
       - mongo
-
   postgres:
     build: ./docker/postgres
     image: postgres-11.6
@@ -32,10 +31,9 @@ services:
       - ./docker/postgres/data:/var/lib/postgresql/data
     ports:
       - 5432:5432
-
   mongo:
-    build: ./docker/mongo
     image: mongo
+    build: ./docker/mongo
     restart: always
     container_name: ${APP_NAME}-mongo
     environment:
@@ -50,8 +48,8 @@ services:
       - ./docker/mongo/configdb:/data/configdb
   mongo-express:
     image: mongo-express
-    links:
-      - mongo:mongo
+    # links:
+    #   - mongo:mongo
     restart: always
     ports:
       - 8081:8081
@@ -61,10 +59,9 @@ services:
       ME_CONFIG_OPTIONS_EDITORTHEME: ${DB_EDITORTHEME}
     depends_on:
       - mongo
-
 volumes:
   postgres:
-  mongo-data:
-    driver: local
-  mongo-config:
-    driver: local
+  # mongo-data:
+  #   driver: local
+  # mongo-config:
+  #   driver: local
