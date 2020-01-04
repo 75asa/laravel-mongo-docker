@@ -33,35 +33,30 @@ services:
       - 5432:5432
   mongo:
     image: mongo
-    build: ./docker/mongo
     restart: always
     container_name: ${APP_NAME}-mongo
+    tty: true
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_DATABASE}
     ports:
       - 27017:27017
-      - 27018:27018
-    command: mongod --smallfiles
+    command: mongod
     volumes:
       - ./docker/mongo/data:/data/db
-      - ./docker/mongo/configdb:/data/configdb
+      - ./docker/mongo/init/:/docker-entrypoint-initdb.d/
   mongo-express:
     image: mongo-express
-    # links:
-    #   - mongo:mongo
     restart: always
+    container_name: ${APP_NAME}-mongo-express
     ports:
       - 8081:8081
     environment:
       ME_CONFIG_MONGODB_ADMINGUSERNAME: ${DB_USERNAME}
       ME_CONFIG_MONGODB_ADMINGPASSWORD: ${DB_PASSWORD}
-      ME_CONFIG_OPTIONS_EDITORTHEME: ${DB_EDITORTHEME}
     depends_on:
       - mongo
 volumes:
   postgres:
-  # mongo-data:
-  #   driver: local
-  # mongo-config:
-  #   driver: local
+  mongo:
