@@ -11,7 +11,7 @@ services:
       - ./docker/php-apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
       - ./docker/php-apache/php.ini:/usr/local/etc/php/php.ini
     ports:
-      - 80:80
+      - 9999:80
     depends_on:
       - postgres
       - mongo
@@ -32,9 +32,9 @@ services:
     ports:
       - 5432:5432
   mongo:
-    image: mongo
+    image: 'mongo:4'
     restart: always
-    container_name: ${APP_NAME}-mongo
+    container_name: ${APP_NAME}-mongo-v4
     tty: true
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
@@ -52,11 +52,18 @@ services:
     container_name: ${APP_NAME}-mongo-express
     ports:
       - 8081:8081
+    links:
+      - mongo
     environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_MONGODB_ADMINGUSERNAME: ${DB_USERNAME}
       ME_CONFIG_MONGODB_ADMINGPASSWORD: ${DB_PASSWORD}
+      ME_CONFIG_MONGODB_SERVER: ${APP_NAME}-mongo-v4
+      ME_CONFIG_BASICAUTH_USERNAME: ${DB_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${DB_PASSWORD}
     depends_on:
       - mongo
 volumes:
   postgres:
-  mongo:
+  mongo: {}
