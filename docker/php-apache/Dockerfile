@@ -26,3 +26,13 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /composer
 ENV PATH $PATH:/composer/vendor/bin
+
+RUN composer create-project --prefer-dist laravel/laravel=6.0 laravel-app && \
+  composer require jenssegers/mongodb
+
+# tools
+RUN apt y update && apt install -y vim less zip unzip curl guzzle
+
+RUN cp .env.example .env && php artisan key:generate
+
+
