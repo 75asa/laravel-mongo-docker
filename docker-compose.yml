@@ -3,11 +3,11 @@ version: '3.1'
 services:
   php:
     build: ./docker/php-apache
-    image: php7.2-apache-composer
+    image: ${PHP_VERSION}-apache-composer
     container_name: ${APP_NAME}-php
     tty: true
     volumes:
-      - ./:/var/www/html/
+      # - ./:/var/www/html/
       - ./docker/php-apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
       - ./docker/php-apache/php.ini:/usr/local/etc/php/php.ini
     ports:
