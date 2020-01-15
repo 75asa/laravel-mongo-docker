@@ -1,36 +1,18 @@
 version: '3.1'
 
 services:
-  php:
+  app:
     build: ./docker/php-apache
-    image: php7.2-apache-composer
+    image: ${PHP_VERSION}-apache-composer
     container_name: ${APP_NAME}-php
     tty: true
     volumes:
-      - ./:/var/www/html/
       - ./docker/php-apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
       - ./docker/php-apache/php.ini:/usr/local/etc/php/php.ini
     ports:
       - 9999:80
     depends_on:
-      - postgres
       - mongo
-  postgres:
-    build: ./docker/postgres
-    image: postgres-11.6
-    container_name: ${APP_NAME}-postgres
-    environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      LANG: ja_JP.UTF-8
-      TZ: Asia/Tokyo
-      DATABASE_HOST: postgres
-    volumes:
-      - ./docker/postgres/init:/docker-entrypoint-initdb.d
-      - ./docker/postgres/data:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
   mongo:
     image: 'mongo:4'
     restart: always
@@ -65,5 +47,4 @@ services:
     depends_on:
       - mongo
 volumes:
-  postgres:
   mongo: {}
