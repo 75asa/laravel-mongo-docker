@@ -27,19 +27,3 @@ ENV COMPOSER_HOME /composer
 ENV PATH $PATH:/composer/vendor/bin
 
 WORKDIR /var/www/html/
-
-# Laravel, mongodb client install
-RUN composer create-project laravel/laravel=6.0 . && \
-  composer require jenssegers/mongodb
-# directory volume mount
-# RUN docker run -v ./:/var/www/html/ php7.2-apache-composer /bin/bash
-# VOLUME "/var/www", "/var/log/apache2", "/etc/apache2"
-VOLUME ../../ /var/www/html/
-
-
-# tools
-# RUN apt -y update && apt install -y vim less zip unzip curl guzzle
-
-# RUN cp .env.example .env && /usr/local/etc/php artisan key:generate
-
-

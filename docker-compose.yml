@@ -7,7 +7,6 @@ services:
     container_name: ${APP_NAME}-php
     tty: true
     volumes:
-      # - ./:/var/www/html/
       - ./docker/php-apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
       - ./docker/php-apache/php.ini:/usr/local/etc/php/php.ini
     ports:
