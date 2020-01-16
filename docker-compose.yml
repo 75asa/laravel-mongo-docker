@@ -7,6 +7,7 @@ services:
     container_name: ${APP_NAME}-php
     tty: true
     volumes:
+      - ./:/var/www/html/
       - ./docker/php-apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
       - ./docker/php-apache/php.ini:/usr/local/etc/php/php.ini
     ports:
@@ -37,7 +38,6 @@ services:
     links:
       - mongo
     environment:
-      ME_CONFIG_MONGODB_SERVER: mongo
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_MONGODB_ADMINGUSERNAME: ${DB_USERNAME}
       ME_CONFIG_MONGODB_ADMINGPASSWORD: ${DB_PASSWORD}

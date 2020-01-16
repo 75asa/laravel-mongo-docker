@@ -26,4 +26,12 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /composer
 ENV PATH $PATH:/composer/vendor/bin
 
+# tools
+RUN apt update && \
+    apt install -y --no-install-recommends \
+    vim fish \
+    curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish \
+    chsh -s $(which fish) \
+    fisher add oh-my-fish/theme-clearance
+
 WORKDIR /var/www/html/
